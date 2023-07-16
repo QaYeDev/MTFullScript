@@ -43,12 +43,10 @@ ATD=asctime()
 import os
 import subprocess
 import time
+pywinauto=App.Lib('pywinauto')[1]
 
 def MTInstaller(install_path="C:/Program Files/MetaTrader 5/", progress_callback=None):
 	# التحقق من وجود مجلد الميتاتريدر 5 في المسار المحدد
-	global pywinauto
-	pywinauto=App.Lib('pywinauto')[1]
-
 	if os.path.exists(install_path):
 		App.SPV("MetaTrader 5 is already installed.")
 		return True, install_path
