@@ -65,8 +65,8 @@ sudo chmod +x ./winetricks
 ./winetricks -q --unattended gdiplus vcrun2010 corefonts dotnet40
 
 #DotNet
-wget -O DNFInstaller.exe https://download.visualstudio.microsoft.com/download/pr/158dce74-251c-4af3-b8cc-4608621341c8/9c1e178a11f55478e2112714a3897c1a/.ndp472-devpack-enu.exe
-wine64 ./DNFInstaller.exe /quiet
+#wget -O DNFInstaller.exe https://download.visualstudio.microsoft.com/download/pr/158dce74-251c-4af3-b8cc-4608621341c8/9c1e178a11f55478e2112714a3897c1a/.ndp472-devpack-enu.exe
+#wine ./DNFInstaller.exe /quiet
 
 #PowerShell
 #wget -O PowerShellSetup.msi https://github.com/PowerShell/PowerShell/releases/download/v7.2.12/PowerShell-7.2.12-win-x64.msi
