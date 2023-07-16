@@ -1,5 +1,5 @@
 ﻿# -*- coding: UTF-8 -*-
-##Mavid By: Qadary-Yemen<QaYeDev>     
+##Mavid By: Qadary-Yemen<QaYeDev>     @2022
 
 ###إعداد البرنامج ليستخدم المعالجات المركزية والرسومية.
 """tf=App.Lib('tensorflow')[1]
