@@ -1,31 +1,31 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 .QaYeApps/MT5/
-*.py[cod]
-*$py.class
+#*.py[cod]
+#*$py.class
 
 # C extensions
-*.so
+#*.so
 
 # Distribution / packaging
-.Python
+#.Python
 build/
 develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
+#dist/
+#downloads/
+#eggs/
+#.eggs/
 #lib/
 #lib64/
 parts/
 sdist/
 var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+#wheels/
+#share/python-wheels/
+#*.egg-info/
+#.installed.cfg
+#*.egg
+#MANIFEST
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -47,9 +47,9 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
+#*.py,cover
+#.hypothesis/
+#.pytest_cache/
 cover/
 
 # Translations
@@ -73,15 +73,15 @@ instance/
 docs/_build/
 
 # PyBuilder
-.pybuilder/
-target/
+#.pybuilder/
+#target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
 
 # IPython
-profile_default/
-ipython_config.py
+#profile_default/
+#ipython_config.py
 
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
@@ -111,7 +111,7 @@ ipython_config.py
 .pdm.toml
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
-__pypackages__/
+#__pypackages__/
 
 # Celery stuff
 celerybeat-schedule
@@ -123,9 +123,9 @@ celerybeat.pid
 # Environments
 #.env
 .venv
-env/
-venv/
-ENV/
+#env/
+#venv/
+#ENV/
 env.bak/
 venv.bak/
 
@@ -148,7 +148,7 @@ dmypy.json
 .pyre/
 
 # pytype static type analyzer
-.pytype/
+#.pytype/
 
 # Cython debug symbols
 cython_debug/
