@@ -1,3 +1,3 @@
 
 c:/MP/Scripts/activate.bat
-python c:/MP/MTFullScript.py
+python -i c:/MP/MTFullScript.py

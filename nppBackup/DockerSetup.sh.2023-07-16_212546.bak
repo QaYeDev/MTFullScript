@@ -70,7 +70,7 @@ sudo docker save -o mydata.tar mydata
 
 
 ضبط المستودع الخارجي.
-docker login -u=qayedev -p=C?gq4jN!EXn*De^
+docker login -u=qayedev -p C?gq4jN!EXn*De^
 
 #إنشاء المستودع إن كان غير موجود للحاوية
 docker tag mydata qayedev/mydata
