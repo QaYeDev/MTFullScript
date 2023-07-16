@@ -24,13 +24,16 @@ App.DENV.load_dotenv()
 import os,ast
 FPRand=float(App.random.choice([25.0,50.0,75.0,100.0]))
 if(os.path.exists(os.path.join(App.AppDir,".env"))):
-	MagicNumber=int(App.FENV(K='MagicNumber')[1])
-	LS=ast.literal_eval(str(App.FENV(K='Servers')[1]))
-	LA=ast.literal_eval(str(App.FENV(K='Accounts')[1]))
-	LD=int(App.FENV(K='DefaultAccount')[1])
-	#Symbols=ast.literal_eval(str(App.FENV(K='Symbols')[1]))
-	AT=bool(App.FENV(K='AllowTrades')[1])
-	#TW=str(App.FENV(K='TradesWay')[1])
+	try:	
+		MagicNumber=int(App.FENV(K='MagicNumber')[1])
+		LS=ast.literal_eval(str(App.FENV(K='Servers')[1]))
+		LA=ast.literal_eval(str(App.FENV(K='Accounts')[1]))
+		LD=int(App.FENV(K='DefaultAccount')[1])
+		#Symbols=ast.literal_eval(str(App.FENV(K='Symbols')[1]))
+		AT=bool(App.FENV(K='AllowTrades')[1])
+		#TW=str(App.FENV(K='TradesWay')[1])
+	except Exception as exMessage:
+		App.Logger(exMessage,40,"ConfigLoader")
 else:
 	LA=int(App.SPV(m=0,tts="Account: "))
 	LP=App.SPV(m=0,tts="Password: ")
