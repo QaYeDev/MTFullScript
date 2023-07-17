@@ -216,7 +216,7 @@ def Logger(logMessage='', logLevel=50, logFrom="MainLogs", to=False, OL=[False,"
 					os.system("xdg-open " + ol[OL[1]])
 		if to == True:
 			Delay(0.036)
-	except ZeroDivisionError as exMessage:
+	except Exception as exMessage:
 		SPV(st=True, vw='T', tl=False, tts="loggerError: "+str(exMessage))
 
 
