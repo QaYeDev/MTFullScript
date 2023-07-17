@@ -23,7 +23,7 @@ mt5=App.Lib('mt5','metatrader5')[1]
 #App.DENV.load_dotenv()
 import os,ast
 FPRand=float(App.random.choice([25.0,50.0,75.0,100.0]))
-if(os.path.exists(os.path.join(App.AppDir,".env"))):
+if(os.path.exists(os.path.join(App.AppDir,"Main.env"))):
 	try:	
 		MagicNumber=int(App.FENV(K='MagicNumber')[1])
 		LS=ast.literal_eval(str(App.FENV(K='Servers')[1]))
@@ -35,9 +35,9 @@ if(os.path.exists(os.path.join(App.AppDir,".env"))):
 	except Exception as exMessage:
 		App.Logger(exMessage,40,"ConfigLoader")
 else:
-	LA=int(App.SPV(m=0,tts="Account: "))
-	LP=App.SPV(m=0,tts="Password: ")
-	LS=App.SPV(m=0,tts="Server: ")
+	MagicNumber=311035
+	LA=[[int(App.SPV(m=0,tts="Account: ")),App.SPV(m=0,tts="Password: ")]]
+	LS=[App.SPV(m=0,tts="Server: ")]
 	LD=0
 	AT=True
 

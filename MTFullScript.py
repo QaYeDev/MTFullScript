@@ -35,9 +35,9 @@ if(os.path.exists(os.path.join(App.AppDir,"Main.env"))):
 	except Exception as exMessage:
 		App.Logger(exMessage,40,"ConfigLoader")
 else:
-	LA=int(App.SPV(m=0,tts="Account: "))
-	LP=App.SPV(m=0,tts="Password: ")
-	LS=App.SPV(m=0,tts="Server: ")
+	MagicNumber=311035
+	LA=[[int(App.SPV(m=0,tts="Account: ")),App.SPV(m=0,tts="Password: "),0,0,'1234567890',True]]
+	LS=[App.SPV(m=0,tts="Server: ")]
 	LD=0
 	AT=True
 

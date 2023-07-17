@@ -150,7 +150,7 @@ def Logger(logMessage='', logLevel=50, logFrom="MainLogs", to=False, OL=[False,"
 			errorLine = str(exMessage.__traceback__.tb_lineno)
 			errorCode = ""  # إعادة تعيين المتغير للاستخدام الجديد
 			# الحصول على الكود الخاطئ من السطر المحدد
-			with open(errorLocation) as f:
+			with cds.open(errorLocation,'r',encoding='utf-8') as f:
 				#errorFullCode=f.read() # Store All Codes in File has Error for review.
 				for i, line in enumerate(f):
 					if i == int(errorLine) - 1:
@@ -217,7 +217,7 @@ def Logger(logMessage='', logLevel=50, logFrom="MainLogs", to=False, OL=[False,"
 		if to == True:
 			Delay(0.036)
 	except Exception as exMessage:
-		SPV(st=True, vw='T', tl=False, tts="logError"+str(exMessage))
+		SPV(st=True, vw='T', tl=False, tts="loggerError: "+str(exMessage))
 
 
 #Setup Texts & Speech features.
@@ -441,12 +441,11 @@ def Files(fP='',fN=None,fE='txt',fM='R+',Fc='UTF-8',fD=None):
 		return False
 
 CENV={} # Dict for ENVConfigs.
-def FENV(P=os.path.join(AppDir,'.env'),K=None,V=None):
+def FENV(P=os.path.join(AppDir,'Main.env'),K=None,V=None):
 	try:
-	
 		if(os.path.exists(P)):
 			o=[True,P]
-			if(DENV.load_dotenv()):
+			if(DENV.load_dotenv(P,encoding='utf-8')):
 				global CENV
 				if(K and V):
 					DENV.set_key(P,K,V)

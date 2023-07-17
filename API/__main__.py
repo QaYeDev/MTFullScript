@@ -462,10 +462,12 @@ def FENV(P=os.path.join(AppDir,'Main.env'),K=None,V=None):
 		if(o==[True,V]): CENV.update({K:V})
 	return o
 	
-NoOption=False
+#NoOption=False
 
-#NoOption=FENV(K='NoOption')[1]
-
+try:
+	NoOption=bool(FENV(K='NoOption')[1])
+except Exception as exMessage:
+	Logger(exMessage,40,'MainConfigLoder')
 
 
 cfgObj=None

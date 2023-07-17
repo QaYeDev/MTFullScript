@@ -441,9 +441,8 @@ def Files(fP='',fN=None,fE='txt',fM='R+',Fc='UTF-8',fD=None):
 		return False
 
 CENV={} # Dict for ENVConfigs.
-def FENV(P=os.path.join(AppDir,'.ENV'),K=None,V=None):
+def FENV(P=os.path.join(AppDir,'Main.env'),K=None,V=None):
 	try:
-	
 		if(os.path.exists(P)):
 			o=[True,P]
 			if(DENV.load_dotenv(P,encoding='utf-8')):
@@ -463,9 +462,9 @@ def FENV(P=os.path.join(AppDir,'.ENV'),K=None,V=None):
 		if(o==[True,V]): CENV.update({K:V})
 	return o
 	
-NoOption=False
+#NoOption=False
 
-#NoOption=FENV(K='NoOption')[1]
+NoOption=FENV(K='NoOption')[1]
 
 
 
