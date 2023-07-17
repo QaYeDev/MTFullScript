@@ -2,7 +2,7 @@
 #configurations Lib for QaYeApps
 ##Programming and Development by: Qadary-Yemen(QaYe)<qadary.yemen@gmail.com>
 
-import sys,os,ast # assensials libs importd.
+import sys,os # assensials libs importd.
 
 #Main App Vars for Controled.
 AppInfo={'Name':"QaYeApps",'FullName':"Qadary-Yemen Applications platform",'Version':5.0,"Script":"Main","PID":os.getpid(),"DevBy":["+967-77-5558-260","t.me/QaYeDev",'qadary.yemen@gmail.com']}
@@ -453,8 +453,8 @@ def FENV(P=os.path.join(AppDir,'Main.env'	),K=None,V=None,T=str):
 					Logger(f"{K}:{V}",20,"SetEnv")
 				if(K):
 					V=DENV.get_key(P,K)
-					o=[True,(V if T==None else (T(V) if T!=bool else ast.literal_eval(V)))]
-					Logger(f"{K}={V}:{type(V)};{T}",20,"GetEnv")
+					o=[True,(V if T==None else T(V))]
+					Logger(f"{K}:{V}",20,"GetEnv")
 		else:
 			if(DENV.load_dotenv(P,encoding='utf-8',verbose=True)):
 				DENV.set_key(P,K,T())
@@ -462,11 +462,10 @@ def FENV(P=os.path.join(AppDir,'Main.env'	),K=None,V=None,T=str):
 				return FENV(P,K,V,T)
 	except Exception as exMessage:
 		Logger(exMessage,40,"fENV:[P}")
-		o=[False,None,P,K,(V if T==None else T(V)),T]
+		o=[False,P,None]
 	else:
-		if(o==[True,V]): CENV.update({K:(V if T==None else T(V))})
-	finally:
-		return o
+		if(o==[True,V]): CENV.update({K:V})
+	return o
 	
 
 try:

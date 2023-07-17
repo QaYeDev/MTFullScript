@@ -30,7 +30,7 @@ if(os.path.exists(os.path.join(App.AppDir,"Main.env"))):
 		LA=ast.literal_eval(App.FENV(K='Accounts',T=str)[1])
 		LD=App.FENV(K='DefaultAccount',T=int)[1]
 		#Symbols=ast.literal_eval(str(App.FENV(K='Symbols')[1]))
-		AT=App.FENV(K='AllowTrades',T=bool)[1]
+		AT=App.FENV(K='AllowTrades',T=int)[1]
 		#TW=str(App.FENV(K='TradesWay')[1])
 	except Exception as exMessage:
 		App.Logger(exMessage,40,"ConfigLoader")
@@ -248,8 +248,8 @@ def MTAccount(risk=1.05,point=100000,margin=1000,percent=200):
 			MTA=f'MTA{AI.login}'
 			if(not MTA in App.Timers): App.Timer(TW={'O':MTA , 'T': 0})
 			else: App.Timer(TW={'O':MTA , 'T': 1})
-			if not SymbolsBest: SymbolsBest=ast.literal_eval(App.FENV(K='SymbolsBest',T=str)[1])[Account[3]]
-			if(not TW): TW=ast.literal_eval(App.FENV(K='TradesWay',T=str)[1])[Account[3]]
+			if not SymbolsBest: SymbolsBest=ast.literal_eval(str(App.FENV(K='SymbolsBest',T=str)[1]))[Account[3]]
+			if(not TW): TW=ast.literal_eval(str(App.FENV(K='TradesWay',T=str)[1]))[Account[3]]
 			if(AI.trade_allowed==False or AI.trade_expert==False):
 				App.SPV(f"الحساب{AI.login}! ممنوع عن التداول يرجى التأكد منه أو التبديل إلى حساب مسموح له بعمليات التداول.      \n\rشكراً عزيزنا العميل: {AI.name} لاستخدامك {App.AppInfo['Script']}V{App.AppInfo['Version']} من أدوات {App.AppInfo['FullName']}.")
 				A_L_T=(AI.company if AI.trade_expert==True else App.AppInfo['Script'])
@@ -1545,7 +1545,7 @@ def main(W='',R=False,la=0):
 		if(R==False):
 			if(App.NoOption==True):
 				return main(W='4',R=R)
-			elif(App.NoOption==False):
+			else:
 				return main(W=App.SPV(m=0,tts="Option"),R=R)
 		"""else:
 			if(RF):

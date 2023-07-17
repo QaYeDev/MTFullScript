@@ -453,7 +453,7 @@ def FENV(P=os.path.join(AppDir,'Main.env'	),K=None,V=None,T=str):
 					Logger(f"{K}:{V}",20,"SetEnv")
 				if(K):
 					V=DENV.get_key(P,K)
-					o=[True,(V if T==None else (T(V) if T!=bool else ast.literal_eval(V)))]
+					o=[True,(V if T==None else )T(V) if T!=bool else ast.literal_eval(V)))]
 					Logger(f"{K}={V}:{type(V)};{T}",20,"GetEnv")
 		else:
 			if(DENV.load_dotenv(P,encoding='utf-8',verbose=True)):

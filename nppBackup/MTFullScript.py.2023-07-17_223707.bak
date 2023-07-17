@@ -30,7 +30,7 @@ if(os.path.exists(os.path.join(App.AppDir,"Main.env"))):
 		LA=ast.literal_eval(App.FENV(K='Accounts',T=str)[1])
 		LD=App.FENV(K='DefaultAccount',T=int)[1]
 		#Symbols=ast.literal_eval(str(App.FENV(K='Symbols')[1]))
-		AT=App.FENV(K='AllowTrades',T=bool)[1]
+		AT=App.FENV(K='AllowTrades',T=int)[1]
 		#TW=str(App.FENV(K='TradesWay')[1])
 	except Exception as exMessage:
 		App.Logger(exMessage,40,"ConfigLoader")
@@ -1545,7 +1545,7 @@ def main(W='',R=False,la=0):
 		if(R==False):
 			if(App.NoOption==True):
 				return main(W='4',R=R)
-			elif(App.NoOption==False):
+			else:
 				return main(W=App.SPV(m=0,tts="Option"),R=R)
 		"""else:
 			if(RF):

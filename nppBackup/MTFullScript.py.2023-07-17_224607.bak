@@ -1545,7 +1545,7 @@ def main(W='',R=False,la=0):
 		if(R==False):
 			if(App.NoOption==True):
 				return main(W='4',R=R)
-			elif(App.NoOption==False):
+			else:
 				return main(W=App.SPV(m=0,tts="Option"),R=R)
 		"""else:
 			if(RF):
