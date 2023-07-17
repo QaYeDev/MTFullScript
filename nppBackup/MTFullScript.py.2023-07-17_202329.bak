@@ -23,7 +23,7 @@ mt5=App.Lib('mt5','metatrader5')[1]
 #App.DENV.load_dotenv()
 import os,ast
 FPRand=float(App.random.choice([25.0,50.0,75.0,100.0]))
-if(os.path.exists(os.path.join(App.AppDir,"Main.env"))):
+if(os.path.exists(os.path.join(App.AppDir,".env"))):
 	try:	
 		MagicNumber=int(App.FENV(K='MagicNumber')[1])
 		LS=ast.literal_eval(str(App.FENV(K='Servers')[1]))
