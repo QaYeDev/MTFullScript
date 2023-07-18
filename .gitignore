@@ -1,6 +1,6 @@
 #folders in project bot not needed to export.
-.QaYeApps/MT5/Bases
-.QaYeApps/MT5/logs
+.QaYeApps/MT5/Bases/
+.QaYeApps/MT5/logs/
 .QaYeApps/Logs/
 nppBackup/
 
