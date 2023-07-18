@@ -21,7 +21,7 @@ from datetime import datetime;from time import asctime
 mt5=App.Lib('mt5','metatrader5')[1]
 
 #App.DENV.load_dotenv()
-import os,ast
+import sys,os,ast
 FPRand=float(App.random.choice([25.0,50.0,75.0,100.0]))
 if(os.path.exists(os.path.join(App.AppDir,"Main.env"))):
 	try:	
@@ -1527,7 +1527,7 @@ def OLD():
 	return main(W='')
 
 
-WF={0:exit,9:OLD,1:MTTrying,2:MTAccount,3:MTOrder,4:MTPositions,5:MTZones}
+WF={0:sys.exit,9:OLD,1:MTTrying,2:MTAccount,3:MTOrder,4:MTPositions,5:MTZones}
 def main(W='',R=False,la=0):
 	try:
 		App.AppInfo.update({'Script':"MTFullScript",'PID':App.os.getpid()})
