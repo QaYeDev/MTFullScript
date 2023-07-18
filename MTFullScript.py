@@ -109,7 +109,10 @@ def MTConnect(account=None): # connect to MetaTrader 5 and login with Option Acc
 			#mt5.shutdown()
 			#mt5.shutdown()
 			App.SPV("Loading MetaTrader5")
-			if not mt5.initialize(path=(os.path.join(f"{App.AppDir}\\MT5\\terminal64.exe") if not App.NoOption else ''),server=LS[account[2]],login=account[0],password=account[1]):
+			MTPath=(os.path.join(f"{App.AppDir}\\MT5\\terminal64.exe") if not App.NoOption else '')
+			MTRun=os.system(f"{MTPath} /config:Config\common.ini /portable")
+			#App.SPV(f'MT5 is Loaded by {MTRun}')
+			if not mt5.initialize(server=LS[account[2]],login=account[0],password=account[1]):
 				App.SPV("MTInitializeFailed")
 				mt5.shutdown()
 				App.MTB(int(ATD.split(' ')[2]+ATD.split(':')[2][:2]),67+int(ATD.split(':')[1][:2]));App.MTB(int(ATD.split(' ')[2]+ATD.split(':')[2][:2]),67+int(ATD.split(':')[2][:2]));
@@ -544,10 +547,10 @@ def MTOrder(op='Add',pair=None, Price=0,order_type=None,action=mt5.TRADE_ACTION_
 						App.Logger(f"FV:{first_position.volume}@{first_position.ticket} ^ SV:{second_position.volume}@{second_position.ticket}; defrent:{CVolumes}",20,'MTOrder')
 						if(CVolumes>3.34):
 							App.MTB(CVolumes+second_position.volume,C['-']+first_position.volume)
-							return False,None
+							return [False,None]
 				except Exception as exMessage:
-					App.Logger(exMessage,40,'MTOrder')
-					return
+					App.Logger(exMessage,40,f'MTOrder'@{op})
+					return [False,None]
 				else: request.update({'position':first_position.ticket,'position_by':second_position.ticket})
 		elif(action==mt5.TRADE_ACTION_MODIFY):
 			if(size<symbol_info.volume_min): size=symbol_info.volume_min

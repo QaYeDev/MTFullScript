@@ -1,7 +1,11 @@
+#folders in project bot not needed to export.
+.QaYeApps/MT5/Bases
+.QaYeApps/MT5/logs
+.QaYeApps/Logs/
+nppBackup/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
-.QaYeApps/MT5/
-.QaYeApps/Logs/
 #*.py[cod]
 #*$py.class
 
