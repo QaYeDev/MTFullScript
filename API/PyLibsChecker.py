@@ -8,7 +8,7 @@ import sys,os,subprocess
 pyPath=sys.prefix
 PV=sys.version.split()
 cwd=os.getcwd().replace("\\","/")
-PM=cwd.split("/")[-1]
+PM=cwd.split("/")[-1] #Import name of Director as Module Name
 
 def SL(fPath=f"python{PV[0]}{PV[1]}._pth", sPath="Lib/site-packages",MN=PM):
 	try:
