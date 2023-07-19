@@ -1,8 +1,8 @@
-python39.zip
+#python39.zip
 .
 
 # Uncomment to run site.main() automatically
-#import site
+import site
 #All Python Folders in .
 
 Lib
@@ -12,7 +12,6 @@ Scripts
 Include
 DLLS
 Tools
-man
 share
 tcl
 etc
