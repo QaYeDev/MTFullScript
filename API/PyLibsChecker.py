@@ -1,20 +1,24 @@
 ﻿# -*- coding: UTF-8 -*-
-## Developed by: QaYe<qadary-yemen>
+#Python Libraries manager.
+## Developed by: QaYe<qadary-yemen> @2023
 
-import sys,os
-import subprocess
+
+import sys,os,subprocess
+
 pyPath=sys.prefix
 PV=sys.version.split()
+cwd=os.getcwd().replace("\\","/")
+PM=cwd.split("/")[-1]
 
-def SL(fPath=f"python{PV[0]}{PV[1]}._pth", sPath="Lib/site-packages"):
+def SL(fPath=f"python{PV[0]}{PV[1]}._pth", sPath="Lib/site-packages",MN=PM):
 	try:
-		import QOAI
-		Paths = QOAI.__path__[0]
-		del QOAI
+		exec(f"import {MN} as Module")
+		Paths = Module.__path__[0].replace("\\","/")
+		exec(f"del {MN}")
 	except ImportError:
 		__main_path__ = os.path.dirname(__file__)
-		file_name = __file__.split("/")[-1]
-		Paths = os.getcwd()
+		file_name = __file__.replace("\\","/").split("/")[-1]
+		Paths = cwd
 
 	fPath = os.path.join(f"{pyPath}/{fPath}")
 	import codecs as cds
@@ -36,23 +40,24 @@ def SL(fPath=f"python{PV[0]}{PV[1]}._pth", sPath="Lib/site-packages"):
 
 	return [Added,(f"OK. {sPath} has been added to: {fPath} configuration." if Added == True else os.environ.update({'PYTHONPATH':f"{os.path.join(pyPath,sPath)}:{os.environ.get('PYTHONPATH', '')}"}))]
 
-def IIL(ln="", lfn="", im=True,sP='Lib/site-packages',MN='QOAI',Rs=False):
+Libs={} #store Libs whin imported as Name for Key and Module in Value
+def IIL(ln="", lfn="", im=True,sP='Lib/site-packages',MN=PM,Rs=False):
 	try:
-		import importlib as IL
-		PM=sys.modules
-		il = IL.import_module(ln)
-		if(PM.get(ln)==None): print(f"{ln} imported.")
+		if(ln or lfn):
+			import importlib as IL
+			il = (Libs.get(ln) if Libs.get(ln)!=None else IL.import_module(ln))
+		else:
+			return IIL(ln=input("Library Name: "), lfn=input("Library FullName optional."), im=True,sP='Lib/site-packages',MN=PM,Rs=False)
 	except ModuleNotFoundError as exMessage:
 		if im == True:
-			print(f"Some required libraries are not installed! Trying to auto install: {exMessage.name} now... please wait.")
+			print(f"\n required  Library : {exMessage.name} . are not installed! Trying to auto installing  now... please wait.")
 			try:
 				IOS = subprocess.Popen(["python", "-m", "pip", "install", f"{exMessage.name if lfn == '' else lfn}"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 				_, error = IOS.communicate()
 
 				if IOS.returncode == 0:
-					print(f"Installation of library is done; waiting until reimport {ln} to  app.")
-					if(SL(sPath=sP)[0]==False):
-						#import sys,os
+					print(f"Installation of library : {lfn} is done; waiting until reimport {ln} to  app.")
+					if(SL(sPath=sP,MN=MN)[0]==False):
 						if(Rs==True):
 							os.system(f"{sys.prefix}/python -m {MN}")
 							sys.exit()
@@ -61,15 +66,17 @@ def IIL(ln="", lfn="", im=True,sP='Lib/site-packages',MN='QOAI',Rs=False):
 					return IIL(ln=ln, lfn=lfn, im=im)
 				else:
 					print(f"Could not installation library: {exMessage.name}; Error: {error.decode('utf-8')}")
-					
 			except FileNotFoundError as exMessage1:
 				print(f"{exMessage1}    {pyPath}")
-
-			except Exception as exMessage1:
-				print(exMessage1)
+			except Exception as exMessage0:
+				print(exMessage0)
 		return [False, exMessage.name]
 	else:
+		if(Libs.get(ln)==None and il):
+			Libs.update({ln:il})
+			print(f"{ln} imported.")
 		return [True, il]
+
 
 li = {"True": list(), "False": list()}
 def CL(ln):
@@ -98,3 +105,4 @@ if(__name__ == "__main__"):
 		CL(input("Library names: "))
 	else:
 		exit(input("Thank you for using Qadary-Yemen's library. Press Enter to quit."))
+		

@@ -432,17 +432,18 @@ def MTOrder(op='Add',pair=None, Price=0,order_type=None,action=mt5.TRADE_ACTION_
 		order=list(OT.values()).index(order_type)
 		if('Add_Best' in op):
 			pd=App.Lib('pandas')[1]
-			symbols_info['Prices']['BA'].clear()
-			symbols_info['Bests']=App.random.choice([SymbolsBest,symbols_info['Names']])
-			App.MTB(int(849+len(order_type)*len(pair)),100)
-			global SP,SPN,sp
+			symbols_info['Prices']['BA'].clear();symbols_info['Bests'].clear()
 			MTAccount()
+			symbols_info['Bests'].extend(App.random.choice([SymbolsBest,symbols_info['Names']]))
+			App.MTB(int(100*len(symbols_info['Bests'])),(49)+(len(order_type)*len(pair)))
+			global SP,SPN,sp,spn
 			for SP in symbols_info['Bests']:
 				OPD[0].update({2:int(str(MTOPC(GT=0,OPParams=SP)[1]).count(f'type={list(OT.values()).index(order_type)}')),3:int(round((MTOPC(CT=0)[0]/Percent)*(PE+PB),0))})
 				if((MTOPC(CT=0)[0]>len(symbols_info['Bests'])/5 and (App.CPercentage(OPD[0][2],OPD[0][3])>Risk/Risk)) and (str(symbols_info['Disabled']).count(str(SP))==0)):
 					SPN=mt5.symbols_get(group=f"*{SP}*")
-					sp=mt5.symbol_info_tick(f"{'' if SPN==None else (SPN if type(SPN)!='List' and len(SPN)<1 else SPN[0])}")
-					if(sp): symbols_info['Prices']['BA'].update({SP:[sp.bid,sp.ask]})
+					sp=('' if SPN==None else (SPN[0] if type(SPN)==type(tuple()) else SPN))
+					if(sp):
+						sp=mt5.symbol_info_tick(sp.name);symbols_info['Prices']['BA'].update({SP:[sp.bid,sp.ask]})
 					else: App.MTB(12345+(len(SP)*len(symbols_info['Prices']['BA'])),78+len(str(SP)))
 					"""OPD[0].remove(OPD[0][2]);OPD[0].remove(OPD[0][2])"""
 					#del SPN,sp
@@ -534,7 +535,7 @@ def MTOrder(op='Add',pair=None, Price=0,order_type=None,action=mt5.TRADE_ACTION_
 		if(action==mt5.TRADE_ACTION_CLOSE_BY):
 			global PGS,itP,first_position,second_position,CVolumes
 			PGS= MTOPC(GT=1,OPParams=pair)[1]
-			if(len(PGS)>1):
+			if(len(PGS)>=1):
 				itP = iter(PGS)
 				try:
 					fp,sp=None,None
@@ -548,10 +549,10 @@ def MTOrder(op='Add',pair=None, Price=0,order_type=None,action=mt5.TRADE_ACTION_
 						if(CVolumes>3.34):
 							App.MTB(CVolumes+second_position.volume,C['-']+first_position.volume)
 							return [False,None]
-				except Exception as exMessage:
-					App.Logger(exMessage,40,f'MTOrder'@{op})
+				except Exception as exMessage1:
+					App.Logger(exMessage1,40,f'MTOrder'@{op})
 					return [False,None]
-				else: request.update({'position':first_position.ticket,'position_by':second_position.ticket})
+				finally: request.update({'position':first_position.ticket,'position_by':second_position.ticket})
 		elif(action==mt5.TRADE_ACTION_MODIFY):
 			if(size<symbol_info.volume_min): size=symbol_info.volume_min
 		if((not 'Add' in op and not 'ReCommend' in op) and  "Close" in op):
@@ -602,7 +603,7 @@ def MTOrder(op='Add',pair=None, Price=0,order_type=None,action=mt5.TRADE_ACTION_
 			"deviation":int(Price*10),
 			"type_time": mt5.ORDER_TIME_GTC
 			})
-		if( len(str(position))>2 and (not '_B' in op and not 'Add' in op)): request.update({"position" :position})
+		if(request.get('position_by')==None  and len(str(position))>3 and (not '_B' in op and not 'Add' in op)): request.update({"position" :position})
 		#if(hasattr('MTOrder','position_by')): request.update({"position_by":position_by})
 		if((position==0) or ('Best' in op or 'Modify' in op  or 'Close' in op)):
 			if(tp<0): tp=abs(tp)
@@ -1391,7 +1392,7 @@ def MTPositions(MP=[0,True]):
 													RPTries=round(RPTries/1.5,2)
 											if((abs(cpm.profit)>App.CPercentage(round(abs(AI.profit),2),(PE)*(Risk+cpm.volume),2)) and (float(cpm.profit)!=0.0) and len(App.EF)>(PE)/(Risk+cpm.volume)):
 												#cancel_orders(From=1,Order=cpm.type,Ticket=cpm.ticket)
-												Action=(App.random.choice([mt5.TRADE_ACTION_CLOSE_BY,mt5.TRADE_ACTION_MODIFY]) if (PE<36.1 and str(MTOPC(GT=1,OPParams=cpm.symbol)[1]).count(f"type={0 if cpm.type==1 else 1}")>0) else mt5.TRADE_ACTION_CLOSE_BY)
+												Action=(App.random.choice([mt5.TRADE_ACTION_CLOSE_BY,mt5.TRADE_ACTION_MODIFY]) if (PE<=PM and str(MTOPC(GT=1,OPParams=cpm.symbol)[1]).count(f"type={0 if cpm.type==1 else 1}")>0) else mt5.TRADE_ACTION_MODIFY)
 												if(MTOrder(action=Action,op=('Close_By' if Action!=7 else 'Modify'),pair=cpm.symbol,order_type=OT[cpm.type],size=(round(cpm.volume/1.75,2) if Action==7 else cpm.volume),type_filling=(mt5.ORDER_FILLING_RETURN if Action!=7 else mt5.ORDER_FILLING_FOK),position=cpm.ticket,SLDistance=cpm.sl,TPDistance=cpm.tp)[0]): C["=="]+=1
 											MTAccount()
 											if(AI.balance<AB):
@@ -1450,11 +1451,11 @@ def MTPositions(MP=[0,True]):
 									App.SPV(f"opening {i}@{int(POO)}/{int(RPO)} Positions with {Op.replace('_','')} features")
 									Action=App.random.choice([mt5.TRADE_ACTION_PENDING,mt5.TRADE_ACTION_DEAL]) if MTOPC(CT=2)[0]<ALO//(PM-(PB+Size)) and Op!='ReCommend' else 1;
 									Price=round((0.525),1) if Action>1 else 0
-									Result=MTOrder(op=Op, action=Action,Price=Price,order_type=(OT[MTRecommendationer(cpo.symbol)[1]] if OP!='ReCommend' else None), size=round(App.CounterPID(Size,(RPO-i)*Risk),2), type_filling=mt5.ORDER_FILLING_FOK,TPDistance=(AI.balance*1.5/75 if OP!='ReCommend' else None), SLDistance=(AI.balance*1.3/100 if OP!='ReCommend' else None),position=0,Comment="@QaRobYe")
+									Result=MTOrder(op=Op, action=Action,Price=Price,order_type=OT[(MTRecommendationer(cpo.symbol)[1] if OP!='ReCommend' else cpo.type)], size=round(App.CounterPID(Size,(RPO-i)*Risk),2), type_filling=mt5.ORDER_FILLING_FOK,TPDistance=(AI.balance*1.5/75 if OP!='ReCommend' else None), SLDistance=(AI.balance*1.3/100 if OP!='ReCommend' else None),position=0,Comment="@QaRobYe")
 									if((Result[0] and hasattr(Result[1],'retcode')) and Result[1].retcode==10009):
 										POO+=i
 										App.MTB(int(abs(150+MTOPC(CT=0)[0]+i+len(OT[result[1].request.type]))),int(125))
-										if(RPTries>1.5): RPTries=App.CounterPID(RPTries,(i+POO if RPTries<=RP/RPO else OPD[1][0]),False)
+										if(RPTries>1.5): RPTries=App.CounterPID(RPTries,(i*POO if RPTries<=RP/RPO else OPD[1][0]),False)
 										#RPTries=round((RPTries)-(RPO+POO+i),2)
 										#RPTries=App.CounterPID(RPTries,i,False)
 									else:
