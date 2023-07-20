@@ -12,10 +12,8 @@ PM=cwd.split("/")[-1] #Import name of Director as Module Name
 
 def SL(fPath=f"python{PV[0]}{PV[1]}._pth", sPath="Lib/site-packages",MN=PM):
 	try:
-		exec(f"import {MN} as Module")
-		Paths = Module.__path__[0].replace("\\","/")
-		exec(f"del {MN}")
-	except ImportError:
+		exec(f"""import {MN} as Module;Paths = Module.__path__[0].replace("\\","/");del {Module}""")
+	except Exception:
 		__main_path__ = os.path.dirname(__file__)
 		file_name = __file__.replace("\\","/").split("/")[-1]
 		Paths = cwd
@@ -47,7 +45,7 @@ def IIL(ln="", lfn="", im=True,sP='Lib/site-packages',MN=PM,Rs=False):
 			import importlib as IL
 			il = (Libs.get(ln) if Libs.get(ln)!=None else IL.import_module(ln))
 		else:
-			return IIL(ln=input("Library Name: "), lfn=input("Library FullName optional."), im=True,sP='Lib/site-packages',MN=PM,Rs=False)
+			return IIL(ln=input("Library Name: "), lfn=input("Library FullName optional."), im=im,sP=sP,MN=MN,Rs=Rs)
 	except ModuleNotFoundError as exMessage:
 		if im == True:
 			print(f"\n required  Library : {exMessage.name} . are not installed! Trying to auto installing  now... please wait.")
@@ -62,8 +60,10 @@ def IIL(ln="", lfn="", im=True,sP='Lib/site-packages',MN=PM,Rs=False):
 							os.system(f"{sys.prefix}/python -m {MN}")
 							sys.exit()
 						else:
-							sys.path.append(os.path.join(pyPath,sP))
-					return IIL(ln=ln, lfn=lfn, im=im)
+							lP=[os.path.join(pyPath,sP),os.path.join(pyPath,sP,MN)] #init Library Paths.
+							if(not lP[0] in sys.path): sys.path.append(lP[0])
+							if(not lP[1] in sys.path and os.path.exists(lP[1])): sys.path.append(lP[1])
+					return IIL(ln=ln, lfn=lfn, im=im,sP=sP,MN=MN,Rs=Rs)
 				else:
 					print(f"Could not installation library: {exMessage.name}; Error: {error.decode('utf-8')}")
 			except FileNotFoundError as exMessage1:

@@ -49,27 +49,28 @@ import time
 
 def MTInstaller(install_path="C:/Program Files/MetaTrader 5/", progress_callback=None):
 	# التحقق من وجود مجلد الميتاتريدر 5 في المسار المحدد
-	global pywinauto
-	pywinauto=App.Lib('pywinauto')[1]
+	#global pywinauto
+	#pywinauto=App.Lib('pywinauto','")[1]
 
 	if os.path.exists(install_path):
 		App.SPV("MetaTrader 5 is already installed.")
-		return True, install_path
+		return [True, install_path]
 
 	# تحديد ملف التثبيت الصامت للميتاتريدر 5
-	mt5_installer_path = "C:/temp/mt5setup.exe"
+	mt5_installer_path = f"{App.AppDir}/mt5setup.exe"
 
 	# تنزيل الملف التثبيت الصامت من الموقع الرسمي للميتاتريدر 5
 	download_url = "https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/mt5setup.exe"
 	subprocess.run(["powershell", "-Command", "(New-Object System.Net.Webclient).DownloadFile('{}', '{}')".format(download_url, mt5_installer_path)])
 
 	# تشغيل المثبت الصامت وتمكين عرض التقدم للعملية
-	subprocess.Popen([mt5_installer_path, "/S"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=subprocess.CREATE_NEW_CONSOLE)
-	app = pywinauto.Application().connect(title="MetaTrader 5 Setup", timeout=120)
+	subprocess.Popen([mt5_installer_path, "/auto"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=subprocess.CREATE_NEW_CONSOLE)
+	"""
+	#app = pywinauto.Application().connect(title="MetaTrader 5 Setup", timeout=120)
 
 	# معالجة نافذة التثبيت
-	setup_window = app.top_window()
-	progress_window = setup_window.child_window(class_name="TNewStaticText")
+	#setup_window = app.top_window()
+	#progress_window = setup_window.child_window(class_name="TNewStaticText")
 
 	# الانتظار حتى يتم عرض نافذة تقدم التثبيت
 	while True:
@@ -77,7 +78,7 @@ def MTInstaller(install_path="C:/Program Files/MetaTrader 5/", progress_callback
 		if progress_text:
 			if progress_callback:
 				progress_callback(progress_text)
-			break
+		break
 		time.sleep(0.1)
 
 	# الانتظار حتى يتماكتمال التثبيت
@@ -88,17 +89,17 @@ def MTInstaller(install_path="C:/Program Files/MetaTrader 5/", progress_callback
 		except:
 			pass
 		time.sleep(0.1)
-
+	   """
 	# التحقق من تثبيت الميتاتريدر 5 بنجاح
 	if os.path.exists(install_path):
 		App.SPV("MetaTrader 5 installed successfully.")
-		return True, install_path
+		return [True, install_path]
 	else:
 		App.SPV("Failed to install MetaTrader 5.")
-		return False, None
-		   
+		return [False, None]
+
 I,L=False,False
-ai={}
+ai={} #store Accounts info whin startup for save old Infos as dict.
 def MTConnect(account=None): # connect to MetaTrader 5 and login with Option Account.
 	global mt5
 	global I,L,ai,ail,Account
@@ -106,11 +107,9 @@ def MTConnect(account=None): # connect to MetaTrader 5 and login with Option Acc
 		if(I==False):
 			mt5=App.Lib('mt5','metatrader5')[1]
 			#mt5.shutdown()
-			#mt5.shutdown()
-			#mt5.shutdown()
-			App.SPV("Loading MetaTrader5")
-			MTPath=(os.path.join(f"{App.AppDir}\\MT5\\terminal64.exe") if not App.NoOption else '')
-			MTRun=os.system(f"{MTPath} /config:Config\common.ini /portable")
+			MTPath=(os.path.join(f"{App.AppDir}/MT5/terminal64.exe") if not App.NoOption else '')
+			App.SPV(f"Loading MetaTrader5 from: {MTPath}")
+			MTRun=os.system(f"{MTPath} /config:Config/common.ini /portable")
 			#App.SPV(f'MT5 is Loaded by {MTRun}')
 			if not mt5.initialize(server=LS[account[2]],login=account[0],password=account[1]):
 				App.SPV("MTInitializeFailed")
